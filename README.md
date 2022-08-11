@@ -2,12 +2,9 @@
 
 ###### CT-week7-day3-homework
 
-
-Hosted on Github Pages: https://jacoby-y.github.io/CT-week7-day3-homework/
-
 <hr>
 
-#### Epic Features
+#### Epic Features in [Part 1](https://jacoby-y.github.io/CT-week7-day3-homework/)
 - Loading animation
 - Sort rows by column
 
