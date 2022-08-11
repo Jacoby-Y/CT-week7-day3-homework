@@ -84,7 +84,7 @@ const getErgast = (season, round)=>{
             const rows = ok?.data?.MRData?.StandingsTable?.StandingsLists[0]?.DriverStandings;
             setTimeout(()=>{
                 onOkRow(rows);
-            }, (extraWait ? 500000 : 0));
+            }, (extraWait.value ? 500000 : 0));
         })
         .catch(err => {
             console.error(err);
@@ -143,6 +143,12 @@ const clearGlowers = ()=>{
     }
 }
 
+const clearEverything = ()=>{
+    clearTable();
+    clearAlerts();
+    clearGlowers();
+}
+
 const mainContainer = document.getElementById("main-container");
 
 const submitBtn = document.getElementById("submit-btn");
@@ -151,9 +157,7 @@ const roundInp = document.getElementById("round-inp");
 submitBtn.onclick = ()=>{
     const season = seasonInp.value;
     const round = roundInp.value = (roundInp.value == "" ? 1 : roundInp.value);
-    clearTable();
-    clearAlerts();
-    clearGlowers();
+    clearEverything();
     if (isNaN(season) || isNaN(round)) {
         mainContainer.insertAdjacentHTML("beforeend", makeAlert("Inputs must be numbers!"));
         return;
@@ -163,10 +167,18 @@ submitBtn.onclick = ()=>{
 }
 
 const waitSignal = document.getElementById("wait-signal");
-let extraWait = false;
+let extraWait = {
+    value: false,
+    toggle() {
+        this.value = !this.value;
+        waitSignal.style.display = this.value ? "block" : "none";
+        clearEverything();
+        if (!this.value) submitBtn.onclick();
+    }
+};
+waitSignal.onclick = ()=> extraWait.toggle();
 window.onkeyup = ({key})=>{
-    if (key == "~") extraWait = !extraWait;
-    waitSignal.style.display = extraWait ? "block" : "none";
+    if (key == "~") extraWait.toggle();
 }
 
 // getErgast(2020, 1);
