@@ -9,15 +9,33 @@
 
 #glowers {
     display: none;
+    width: 100%;
 }
 #glowers p {
     margin-bottom: 0.5rem;
     display: flex;
-    justify-content: space-around;
+    margin: initial auto;
+    /* justify-content: space-around; */
     /* justify-content: space-evenly; */
 }
+#glowers[anim="space"] p {
+    justify-content: space-around;
+}
+#glowers[anim="center"] p {
+    justify-content: center;
+    align-items: center;
+}
+#glowers[anim="right"] p {
+    flex-direction: row-reverse;
+}
+#glowers[anim="left"] p {
+    flex-direction: row;
+}
+
 #glowers p span {
     min-height: 2rem;
+    margin-left: 12px;
+    margin: initial auto;
 }
 body[loading="true"] #glowers {
     display: block;
@@ -25,4 +43,11 @@ body[loading="true"] #glowers {
 
 body {
     min-height: 100vh;
+}
+
+#wait-signal {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: none;
 }

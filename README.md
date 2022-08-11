@@ -4,3 +4,8 @@
 
 
 Hosted on Github Pages: https://jacoby-y.github.io/CT-week7-day3-homework/
+
+
+#### Epic Features
+- Loading animation
+- Sort rows by column

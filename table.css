@@ -4,12 +4,16 @@
 #main-table thead th {
     cursor: pointer;
     user-select: none;
+    width: max-content;
 }
 tr td.placeholder {
     border-width: 0;
     height: 1.5rem;
     min-height: 1.5rem;
     background-color: grey;
+}
+#main-table * {
+    min-width: max-content;
 }
 
 #main-table thead th[col="index"]::after { content: " -"; }

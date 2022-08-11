@@ -4,6 +4,16 @@ const mainTable = document.getElementById("main-table");
 
 let tData = [];
 
+const incr = (()=>{
+    let num = 0;
+    return ()=> num++;
+})();
+const animations = ["center", "left", "right", "space"];
+const setRandomAnimation = ()=>{
+    const rand = animations[incr() % animations.length]; // Math.floor(Math.random() * animations.length)
+    glowers.setAttribute("anim", rand);
+}
+
 const bool = {
     false: false,
     true: true,
@@ -49,26 +59,32 @@ const buildTable = (key="index")=>{
     });
 }
 
+const onOkRow = (rows)=>{
+    clearGlowers();
+    if (rows == undefined) {
+        makeAlert("An error occured and the table couldn't be constructed!");
+        return;
+    }
+    tData = rows.map((base, index)=>{
+        // { dateOfBirth, familyName, givenName, nationality, position, wins, Constructors}
+        const rowData = { ...base, ...base.Driver, index };
+        rowData.carName = base.Constructors[0].name;
+        return rowData;
+    });
+    mainTable.setAttribute("reverse", "true");
+    mainTable.setAttribute("order", "index");
+    buildTable();
+}
 const getErgast = (season, round)=>{
     setupGlowers();
+    setRandomAnimation();
     const ergastURL = `https://ergast.com/api/f1/${season}/${round}/driverStandings.json`;
     axios.get(ergastURL)
         .then(ok => {
             const rows = ok?.data?.MRData?.StandingsTable?.StandingsLists[0]?.DriverStandings;
-            clearGlowers();
-            if (rows == undefined) {
-                makeAlert("An error occured and the table couldn't be constructed!");
-                return;
-            }
-            tData = rows.map((base, index)=>{
-                // { dateOfBirth, familyName, givenName, nationality, position, wins, Constructors}
-                const rowData = { ...base, ...base.Driver, index };
-                rowData.carName = base.Constructors[0].name;
-                return rowData;
-            });
-            mainTable.setAttribute("reverse", "true");
-            mainTable.setAttribute("order", "index");
-            buildTable();
+            setTimeout(()=>{
+                onOkRow(rows);
+            }, (extraWait ? 500000 : 0));
         })
         .catch(err => {
             console.error(err);
@@ -98,7 +114,7 @@ const makeAlert = (message, theme="warning")=> `
 const glowers = document.getElementById("glowers");
 
 const addGlowRow = ()=>{
-    const col = [1, 1, 1, 1, 2, 2, 2];
+    const col = [1, 1, 1, 1, 3, 2, 2];
     const rows = col.length;
     let result = `<p class="placeholder-glow"> </p>`;
     const row = (glowers.insertAdjacentHTML("beforeend", result), glowers.lastChild);
@@ -118,6 +134,10 @@ const setupGlowers = ()=>{
 };
 
 const clearGlowers = ()=>{
+    let id = setTimeout(()=>{}, 0);
+    while (id-- >= 0) {
+        clearTimeout(id);
+    }
     while (glowers.children.length > 0) {
         glowers.removeChild(glowers.firstChild);
     }
@@ -130,7 +150,7 @@ const seasonInp = document.getElementById("season-inp");
 const roundInp = document.getElementById("round-inp");
 submitBtn.onclick = ()=>{
     const season = seasonInp.value;
-    const round = roundInp.value;
+    const round = roundInp.value = (roundInp.value == "" ? 1 : roundInp.value);
     clearTable();
     clearAlerts();
     clearGlowers();
@@ -140,6 +160,13 @@ submitBtn.onclick = ()=>{
     }
     tData = [];
     getErgast(season, round);
+}
+
+const waitSignal = document.getElementById("wait-signal");
+let extraWait = false;
+window.onkeyup = ({key})=>{
+    if (key == "~") extraWait = !extraWait;
+    waitSignal.style.display = extraWait ? "block" : "none";
 }
 
 // getErgast(2020, 1);
