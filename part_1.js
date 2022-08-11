@@ -1,32 +1,80 @@
 
 const tBody = document.getElementById("t-body");
+const mainTable = document.getElementById("main-table");
+
+let tData = [];
+
+const bool = {
+    false: false,
+    true: true,
+}
+
+const buildTable = (key="index")=>{
+    clearTable();
+    if (tData.length == 0) return;
+
+    if (key == mainTable.getAttribute("order")) {
+        mainTable.setAttribute("reverse", !bool[mainTable.getAttribute("reverse")]);
+    } else {
+        mainTable.setAttribute("reverse", "false");
+        mainTable.setAttribute("order", key);
+    }
+
+    tData.sort((a, b)=>{
+        const v1 = a[key], v2 = b[key];
+        if (v1 == v2) return 0;
+        if (typeof v1 == "string") {
+            if ([v1, v2].sort()[0] == v1) return -1;
+            return 1;
+        } else {
+            return v1 - v2;
+        }
+    })
+    if (bool[mainTable.getAttribute("reverse")]) {
+        tData = tData.reverse();
+    }
+    tData.forEach((data)=>{
+        tBody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <th scope="row">${data.index+1}</th>
+                <td>${data.givenName}</td>
+                <td>${data.familyName}</td>
+                <td>${data.dateOfBirth}</td>
+                <td>${data.position}</td>
+                <td>${data.wins}</td>
+                <td>${data.nationality}</td>
+                <td>${data.carName}</td>
+            </tr>
+        `);
+    });
+}
 
 const getErgast = (season, round)=>{
-    setupGlowers()
+    setupGlowers();
     const ergastURL = `https://ergast.com/api/f1/${season}/${round}/driverStandings.json`;
     axios.get(ergastURL)
         .then(ok => {
             const rows = ok?.data?.MRData?.StandingsTable?.StandingsLists[0]?.DriverStandings;
             clearGlowers();
-            rows.forEach(({Driver, position, wins, Constructors}, index)=>{
-                const { dateOfBirth, familyName, givenName, nationality } = Driver;
-                const carName = Constructors[0].name;
-                tBody.insertAdjacentHTML("beforeend", `
-                <tr>
-                    <th scope="row">${index+1}</th>
-                    <td>${givenName}</td>
-                    <td>${familyName}</td>
-                    <td>${dateOfBirth}</td>
-                    <td>${position}</td>
-                    <td>${wins}</td>
-                    <td>${nationality}</td>
-                    <td>${carName}</td>
-                </tr>
-                `);
+            if (rows == undefined) {
+                makeAlert("An error occured and the table couldn't be constructed!");
+                return;
+            }
+            tData = rows.map((base, index)=>{
+                // { dateOfBirth, familyName, givenName, nationality, position, wins, Constructors}
+                const rowData = { ...base, ...base.Driver, index };
+                rowData.carName = base.Constructors[0].name;
+                return rowData;
             });
+            mainTable.setAttribute("reverse", "true");
+            mainTable.setAttribute("order", "index");
+            buildTable();
         })
         .catch(err => {
             console.error(err);
+            clearTable();
+            clearAlerts();
+            clearGlowers();
             mainContainer.insertAdjacentHTML("beforeend", makeAlert("Error when trying to build table!"));
         });
 }
@@ -90,6 +138,7 @@ submitBtn.onclick = ()=>{
         mainContainer.insertAdjacentHTML("beforeend", makeAlert("Inputs must be numbers!"));
         return;
     }
+    tData = [];
     getErgast(season, round);
 }
 

@@ -1,5 +1,5 @@
 #submit-btn {
-    background-color: #e9ecef;
+    background-color: #c5e2ff;
     border: 1px solid #ced4da;
     border-left: none;
 }
@@ -7,15 +7,6 @@
     border-color: grey;
 }
 
-tr td.placeholder {
-    border-width: 0;
-    height: 1.5rem;
-    min-height: 1.5rem;
-    background-color: grey;
-}
-#main-table {
-    margin-bottom: 5px;
-}
 #glowers {
     display: none;
 }

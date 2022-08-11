@@ -1,0 +1,46 @@
+#main-table {
+    margin-bottom: 5px;
+}
+#main-table thead th {
+    cursor: pointer;
+    user-select: none;
+}
+tr td.placeholder {
+    border-width: 0;
+    height: 1.5rem;
+    min-height: 1.5rem;
+    background-color: grey;
+}
+
+#main-table thead th[col="index"]::after { content: " -"; }
+#main-table[order="index"][reverse="false"] thead th[col="index"]::after { content: "↓"; }
+#main-table[order="index"][reverse="true"] thead th[col="index"]::after { content: "↑"; }
+
+
+#main-table thead th[col="givenName"]::after { content: " -"; } 
+#main-table[order="givenName"][reverse="false"] thead th[col="givenName"]::after { content: "↓"; }
+#main-table[order="givenName"][reverse="true"] thead th[col="givenName"]::after { content: "↑"; }
+
+#main-table thead th[col="familyName"]::after { content: " -"; } 
+#main-table[order="familyName"][reverse="false"] thead th[col="familyName"]::after { content: "↓"; }
+#main-table[order="familyName"][reverse="true"] thead th[col="familyName"]::after { content: "↑"; }
+
+#main-table thead th[col="dateOfBirth"]::after { content: " -"; } 
+#main-table[order="dateOfBirth"][reverse="false"] thead th[col="dateOfBirth"]::after { content: "↓"; }
+#main-table[order="dateOfBirth"][reverse="true"] thead th[col="dateOfBirth"]::after { content: "↑"; }
+
+#main-table thead th[col="position"]::after { content: " -"; } 
+#main-table[order="position"][reverse="false"] thead th[col="position"]::after { content: "↓"; }
+#main-table[order="position"][reverse="true"] thead th[col="position"]::after { content: "↑"; }
+
+#main-table thead th[col="wins"]::after { content: " -"; } 
+#main-table[order="wins"][reverse="false"] thead th[col="wins"]::after { content: "↓"; }
+#main-table[order="wins"][reverse="true"] thead th[col="wins"]::after { content: "↑"; }
+
+#main-table thead th[col="nationality"]::after { content: " -"; } 
+#main-table[order="nationality"][reverse="false"] thead th[col="nationality"]::after { content: "↓"; }
+#main-table[order="nationality"][reverse="true"] thead th[col="nationality"]::after { content: "↑"; }
+
+#main-table thead th[col="carName"]::after { content: " -"; } 
+#main-table[order="carName"][reverse="false"] thead th[col="carName"]::after { content: "↓"; }
+#main-table[order="carName"][reverse="true"] thead th[col="carName"]::after { content: "↑"; }
