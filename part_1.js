@@ -27,7 +27,7 @@ const getErgast = (season, round)=>{
         })
         .catch(err => {
             console.error(err);
-            mainContainer.insertAdjacentHTML("beforeend", makePoppup("Error when trying to build table!"));
+            mainContainer.insertAdjacentHTML("beforeend", makeAlert("Error when trying to build table!"));
         });
 }
 
@@ -37,7 +37,11 @@ const clearTable = ()=>{
     }
 }
 
-const makePoppup = (message, theme="warning")=> `
+const clearAlerts = ()=>{
+    [].slice.call(document.querySelectorAll(".alert")).forEach(elem => elem.remove());
+}
+
+const makeAlert = (message, theme="warning")=> `
 <div class="alert alert-${theme} alert-dismissible fade show m-auto mb-5 mx-5 width-max-content" role="alert">
     ${message}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -80,8 +84,10 @@ submitBtn.onclick = ()=>{
     const season = seasonInp.value;
     const round = roundInp.value;
     clearTable();
+    clearAlerts();
+    clearGlowers();
     if (isNaN(season) || isNaN(round)) {
-        mainContainer.insertAdjacentHTML("beforeend", makePoppup("Inputs must be numbers!"));
+        mainContainer.insertAdjacentHTML("beforeend", makeAlert("Inputs must be numbers!"));
         return;
     }
     getErgast(season, round);
