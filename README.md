@@ -4,7 +4,7 @@
 
 <hr>
 
-### Epic Features in [Part 1](https://jacoby-y.github.io/CT-week7-day3-homework/)
+### Epic Features in [Part One](https://jacoby-y.github.io/CT-week7-day3-homework/)
 - Loading animation
 - Sort rows by column
 
